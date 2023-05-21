@@ -1,32 +1,36 @@
+import java.lang.NullPointerException;
 public class MyBinarySearchTree<K extends Comparable<K>,V> {
     private Node root;
     private int size;
-    private class Node
-    {
+
+    private class Node {
         private K key;
         private V val;
-        private Node left,right;
-        public Node(K key, V val)
-        {
+        private Node left, right;
+
+        public Node(K key, V val) {
             this.key = key;
             this.val = val;
         }
     }
+
     private Node put(Node pointer, K key, V val) {
         if (pointer == null) {
             size++;
             return new Node(key, val);
         }
-        if (key.compareTo(pointer.key) < 0){
+        if (key.compareTo(pointer.key) < 0) {
             pointer.left = put(pointer.left, key, val);
-        } else{
+        } else {
             pointer.right = put(pointer.right, key, val);
         }
         return pointer;
     }
-    public void put(K key,V val){
-        root = put(root,key,val);
+
+    public void put(K key, V val) {
+        root = put(root, key, val);
     }
+
     public V get(K key) {
         Node found = get(root, key);
         if (found == null)
@@ -34,20 +38,23 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         else
             return found.val;
     }
+
     private Node get(Node pointer, K key) {
         if (pointer == null || key.equals(pointer.key)) {
             return pointer;
         }
-        if (key.compareTo(pointer.key) < 0) {
+
+        if (key.compareTo(pointer.key) < 0)
             return get(pointer.left, key);
-        } else {
+        else
             return get(pointer.right, key);
-        }
     }
-    public void delete(K key){
+
+    public void delete(K key) {
         root = delete(root, key);
     }
-    public Node delete(Node pointer, K key){
+
+    public Node delete(Node pointer, K key) {
         if (pointer == null) {
             return null;
         }
@@ -71,11 +78,23 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         }
         return pointer;
     }
+
     private Node findMin(Node node) {
         if (node.left == null) {
             return node;
         }
         return findMin(node.left);
     }
-    //public Iterable<K> iterator(){}
+
+    public Iterable<K> iterator() {}
+
+    public class Pairs<K, V> {
+        private K key;
+        private V value;
+
+        public Pairs(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
 }
