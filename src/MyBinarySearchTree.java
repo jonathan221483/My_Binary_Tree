@@ -89,12 +89,15 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         return findMin(node.left);
     }
 
-    public Iterable<K> iterator() {}
+    public Iterable<Pairs<K, V>> iterator(){
+        List<Pairs<K, V>> pairs = new ArrayList<>();
+        inorderTraversal(root, pairs);
+        return pairs;
+    }
 
     public class Pairs<K, V> {
         private K key;
         private V value;
-
         public Pairs(K key, V value) {
             this.key = key;
             this.value = value;
