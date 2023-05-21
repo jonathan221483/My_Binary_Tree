@@ -1,8 +1,10 @@
 import java.lang.NullPointerException;
 import java.util.List;
+import java.util.Stack;
+import java.util.Iterator;
 import java.util.ArrayList;
 
-public class MyBinarySearchTree<K extends Comparable<K>,V> {
+public class MyBinarySearchTree<K extends Comparable<K>,V> implements Iterable<MyBinarySearchTree.Pairs> {
     private Node root;
 
     private class Node {
@@ -95,10 +97,32 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         return node;
     }
 
-    public Iterable<Pairs<K, V>> iterator(){
-        List<Pairs<K, V>> pairs = new ArrayList<>();
-        inorderTraversal(root, pairs);
-        return pairs;
+    public Iterator<MyBinarySearchTree.Pairs> iterator(){
+        return new MyIterator();
+    }
+
+    private class MyIterator implements Iterator<MyBinarySearchTree.Pairs>{
+        private Stack<Pairs> stack;
+        public MyIterator(){
+            this.stack = new Stack<>();
+            inOrder(root);
+        }
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+        @Override
+        public Pairs next() {
+            return stack.pop();
+        }
+        private void inOrder(Node node){
+            if (node == null){
+                return;
+            }
+            inOrder(node.right);
+            this.stack.push(new Pairs(node.key, node.val));
+            inOrder(node.left);
+        }
     }
 
     public class Pairs<K, V> {
@@ -108,15 +132,5 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
             this.key = key;
             this.val = value;
         }
-
     }
-    private void inorderTraversal(Node node, List<Pairs<K, V>> pairs) {
-        if (node != null) {
-            inorderTraversal(node.left, pairs);
-            pairs.add(new Pairs<>(node.key, node.val));
-            inorderTraversal(node.right, pairs);
-        }
-    }
-
-
 }
