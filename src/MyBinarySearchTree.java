@@ -1,4 +1,7 @@
 import java.lang.NullPointerException;
+import java.util.List;
+import java.util.ArrayList;
+
 public class MyBinarySearchTree<K extends Comparable<K>,V> {
     private Node root;
     private int size;
@@ -39,7 +42,7 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
             return found.val;
     }
 
-    private Node get(Node pointer, K key) {
+    private Node get(Node pointer, K key) throws NullPointerException{
         if (pointer == null || key.equals(pointer.key)) {
             return pointer;
         }
@@ -97,4 +100,13 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
             this.value = value;
         }
     }
+    private void inorderTraversal(Node node, List<Pairs<K, V>> pairs) {
+        if (node != null) {
+            inorderTraversal(node.left, pairs);
+            pairs.add(new Pairs<>(node.key, node.val));
+            inorderTraversal(node.right, pairs);
+        }
+    }
+
+
 }
