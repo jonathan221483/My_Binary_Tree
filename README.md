@@ -1,5 +1,5 @@
 # Algorithms and Data Structures | Khaimuldin Nursultan
-## Assignment 4 | Hash Table implementation
+## Assignment 5 | Binary search tree implementation
 ### Methods needed to be implemented:
 
 ## MyBinarySearchTree
