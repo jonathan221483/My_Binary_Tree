@@ -35,19 +35,16 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
     }
 
     public V get(K key) {
-        Node found = get(root, key);
-        if (found == null)
-            return null;
-        else
-            return found.val;
+        return get(root, key).val;
     }
 
     private Node get(Node pointer, K key) throws NullPointerException{
         if (pointer == null || key.equals(pointer.key)) {
             return pointer;
         }
-
-        if (key.compareTo(pointer.key) < 0)
+        if (key.compareTo(pointer.key) == 0)
+            return pointer;
+        else if (key.compareTo(pointer.key) < 0)
             return get(pointer.left, key);
         else
             return get(pointer.right, key);
@@ -57,6 +54,7 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         root = delete(root, key);
     }
 
+    //public int size(){}
     public Node delete(Node pointer, K key) {
         if (pointer == null) {
             return null;
@@ -96,12 +94,13 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
     }
 
     public class Pairs<K, V> {
-        private K key;
-        private V value;
+        public K key;
+        public V val;
         public Pairs(K key, V value) {
             this.key = key;
-            this.value = value;
+            this.val = value;
         }
+
     }
     private void inorderTraversal(Node node, List<Pairs<K, V>> pairs) {
         if (node != null) {
