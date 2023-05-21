@@ -1,10 +1,10 @@
 public class MyBinarySearchTree<K extends Comparable<K>,V> {
     private Node root;
+    private int size;
     private class Node
     {
         private K key;
         private V val;
-        private int size;
         private Node left,right;
         public Node(K key, V val)
         {
@@ -27,8 +27,23 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
     public void put(K key,V val){
         root = put(root,key,val);
     }
-
-    public V get(K key){}
-    public void delete(K key){}
-    public Iterable<K> iterator(){}
+    public V get(K key) {
+        Node found = get(root, key);
+        if (found == null)
+            return null;
+        else
+            return found.val;
+    }
+    private Node get(Node current, K key) {
+        if (current == null || key.equals(current.key)) {
+            return current;
+        }
+        if (key.compareTo(current.key) < 0) {
+            return get(current.left, key);
+        } else {
+            return get(current.right, key);
+        }
+    }
+    //public void delete(K key){}
+    //public Iterable<K> iterator(){}
 }
