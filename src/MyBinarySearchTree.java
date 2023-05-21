@@ -12,17 +12,17 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
             this.val = val;
         }
     }
-    private Node put(Node current, K key, V val) {
-        if (current == null) {
+    private Node put(Node pointer, K key, V val) {
+        if (pointer == null) {
             size++;
             return new Node(key, val);
         }
-        if (key.compareTo(current.key) < 0){
-            current.left = put(current.left, key, val);
+        if (key.compareTo(pointer.key) < 0){
+            pointer.left = put(pointer.left, key, val);
         } else{
-            current.right = put(current.right, key, val);
+            pointer.right = put(pointer.right, key, val);
         }
-        return current;
+        return pointer;
     }
     public void put(K key,V val){
         root = put(root,key,val);
@@ -34,16 +34,48 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         else
             return found.val;
     }
-    private Node get(Node current, K key) {
-        if (current == null || key.equals(current.key)) {
-            return current;
+    private Node get(Node pointer, K key) {
+        if (pointer == null || key.equals(pointer.key)) {
+            return pointer;
         }
-        if (key.compareTo(current.key) < 0) {
-            return get(current.left, key);
+        if (key.compareTo(pointer.key) < 0) {
+            return get(pointer.left, key);
         } else {
-            return get(current.right, key);
+            return get(pointer.right, key);
         }
     }
-    //public void delete(K key){}
+    public void delete(K key){
+        root = delete(root, key);
+    }
+    public Node delete(Node pointer, K key){
+        if (pointer == null) {
+            return null;
+        }
+        if (key.compareTo(pointer.key) < 0) {
+            pointer.left = delete(pointer.left, key);
+        } else if (key.compareTo(pointer.key) > 0) {
+            pointer.right = delete(pointer.right, key);
+        } else {
+            if (pointer.left == null) {
+                size--;
+                return pointer.right;
+            } else if (pointer.right == null) {
+                size--;
+                return pointer.left;
+            } else {
+                Node child = findMin(pointer.right);
+                pointer.key = child.key;
+                pointer.val = child.val;
+                pointer.right = delete(pointer.right, child.key);
+            }
+        }
+        return pointer;
+    }
+    private Node findMin(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return findMin(node.left);
+    }
     //public Iterable<K> iterator(){}
 }
