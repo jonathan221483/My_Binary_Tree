@@ -1,4 +1,5 @@
 public class MyBinarySearchTree<K extends Comparable<K>,V> {
+    private Node root;
     private class Node
     {
         private K key;
@@ -10,5 +11,8 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
             this.val = val;
         }
     }
-
+    public void put(K key,V val){}
+    public V get(K key){}
+    public void delete(K key){}
+    public Iterable<K> iterator(){}
 }
