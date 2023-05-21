@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class MyBinarySearchTree<K extends Comparable<K>,V> {
     private Node root;
-    private int size;
 
     private class Node {
         private K key;
         private V val;
+        private int size = 1;
         private Node left, right;
 
         public Node(K key, V val) {
@@ -19,7 +19,6 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
 
     private Node put(Node pointer, K key, V val) {
         if (pointer == null) {
-            size++;
             return new Node(key, val);
         }
         if (key.compareTo(pointer.key) < 0) {
@@ -27,6 +26,7 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         } else {
             pointer.right = put(pointer.right, key, val);
         }
+        pointer.size++;
         return pointer;
     }
 
@@ -37,11 +37,7 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
     public V get(K key) {
         return get(root, key).val;
     }
-
     private Node get(Node pointer, K key) throws NullPointerException{
-        if (pointer == null || key.equals(pointer.key)) {
-            return pointer;
-        }
         if (key.compareTo(pointer.key) == 0)
             return pointer;
         else if (key.compareTo(pointer.key) < 0)
@@ -49,42 +45,54 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> {
         else
             return get(pointer.right, key);
     }
-
+    public int size(){return root.size;}
     public void delete(K key) {
-        root = delete(root, key);
+        root = delete(root, key, true);
     }
-
-    //public int size(){}
-    public Node delete(Node pointer, K key) {
+    public Node delete(Node pointer, K key,boolean size1) {
         if (pointer == null) {
             return null;
         }
-        if (key.compareTo(pointer.key) < 0) {
-            pointer.left = delete(pointer.left, key);
-        } else if (key.compareTo(pointer.key) > 0) {
-            pointer.right = delete(pointer.right, key);
-        } else {
+        if (key.compareTo(pointer.key) == 0) {
             if (pointer.left == null) {
-                size--;
                 return pointer.right;
-            } else if (pointer.right == null) {
-                size--;
-                return pointer.left;
-            } else {
-                Node child = findMin(pointer.right);
-                pointer.key = child.key;
-                pointer.val = child.val;
-                pointer.right = delete(pointer.right, child.key);
+            } else if (pointer.size == 1){
+                if (pointer.left == null) pointer.right = null;
+                else if (pointer.right == null) pointer.left = null;
+            }
+            else {
+                Node temp;
+                if (pointer.left.size < pointer.right.size){
+                    temp = findMax(pointer.left);
+                }
+                else{
+                    temp = findMin(pointer.right);
+                }
+                delete(pointer, temp.key, false);
+                pointer.key = temp.key;
+                pointer.val = temp.val;
             }
         }
-        return pointer;
-    }
+        else if (key.compareTo(pointer.key) < 0) {
+                pointer.left = delete(pointer.left, key, size1);
+            }
+        else {
+                pointer.right = delete(pointer.right, key, size1);
+            }
+            return pointer;
+        }
 
     private Node findMin(Node node) {
         if (node.left == null) {
             return node;
         }
         return findMin(node.left);
+    }
+    private Node findMax(Node node){
+        if (node.right != null){
+            return findMax(node.right);
+        }
+        return node;
     }
 
     public Iterable<Pairs<K, V>> iterator(){
