@@ -94,6 +94,27 @@ public class MyBinarySearchTree<K extends Comparable<K>,V> implements Iterable<M
         }
         return node;
     }
+    public boolean consist(K key){
+        try {
+            if (!consist(root, key).equals(null))
+                return true;
+        }
+        catch (NullPointerException e)
+        {
+            return false;
+        }
+            return false;
+    }
+    private Node consist(Node node, K key){
+        if (key.compareTo(node.key) == 0)
+            return node;
+        else if (key.compareTo(node.key) < 0)
+            return get(node.left, key);
+        else
+            return consist(node.right, key);
+    }
+
+
 
     public Iterator<MyBinarySearchTree.Pairs> iterator(){ //iterator needed to implement in-order traverse
         return new MyIterator();

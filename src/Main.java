@@ -11,5 +11,6 @@ public class Main {
         for (MyBinarySearchTree.Pairs elem : tree) { //traverse all elements
             System.out.println("key is " + elem.key + " and value is " + elem.val);
         }
+        System.out.println(tree.consist(12));
     }
 }
